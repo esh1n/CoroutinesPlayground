@@ -13,15 +13,25 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel: CancelViewModel by viewModels()
+    private val cancelViewModel: CancelViewModel by viewModels()
+    private val innerCoViewmodel: InnerCoViewmodel by viewModels()
+    private val lazyCoVM: LazyCoVM by viewModels()
+    private val asyncAwaitVM: AsyncAwaitSimpleVM by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.btn_run).setOnClickListener {
-            viewModel.onRun()
+//            cancelViewModel.onRun()
+//            innerCoViewmodel.onRun()
+//            lazyCoVM.onPrepareLazyRun()
+            asyncAwaitVM.onRunInParallel()
         }
         view.findViewById<Button>(R.id.btn_stop).setOnClickListener {
-            viewModel.onCancel()
+            cancelViewModel.onCancel()
+        }
+        view.findViewById<Button>(R.id.btn_run2).setOnClickListener {
+            innerCoViewmodel.onRunAndWait()
+            lazyCoVM.onRunLazy()
         }
 
     }
@@ -29,13 +39,13 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.log("FRAGMENT onDestroyView")
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.log("FRAGMENT onDestroy")
+        cancelViewModel.log("FRAGMENT onDestroyView")
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelViewModel.log("FRAGMENT onDestroy")
+    }
 
 
 }
